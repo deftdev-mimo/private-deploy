@@ -4,7 +4,7 @@ metadata:
   name: my-website
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.iog
 spec:
   destination:
     namespace: webnginx
