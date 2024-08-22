@@ -1,42 +1,19 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  annotations:
-    argocd-image-updater.argoproj.io/payments.update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: git
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
-  name: nginx-dev
+  name: my-website
   namespace: argocd
 spec:
   destination:
-    namespace: dev
-    server: https://kubernetes.default.svc
+    namespace: webnginx
+    server: https://kubernetes.default.svc 
   project: default
   source:
-    helm:
-      parameters:
-      - name: image.repository
-        value: https://hub.docker.com/layers/liquid07/helloworld/
-      - name: service.port
-        value: '80'
-      - name: livenessProbe.httpGet.path
-        value: /healthz
-      - name: readinessProbe.httpGet.path
-        value: /healthz
-      - name: image.tag
-        value: 1
-    path: .
     repoURL: https://github.com/deftdev-mimo/private-deploy.git
     targetRevision: main
+    path: nginx/
   syncPolicy:
     automated:
-      allowEmpty: false
       prune: true
+      allowEmpty: true
       selfHeal: true
-    syncOptions:
-    - Validate=true
-    - CreateNamespace=true
-    - PrunePropagationPolicy=foreground
-    - PruneLast=true
